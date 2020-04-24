@@ -40,7 +40,7 @@ type JUnitTestCase struct {
 	Classname   string            `xml:"classname,attr"`
 	Name        string            `xml:"name,attr"`
 	Time        string            `xml:"time,attr"`
-	File 		string			  `xml:"time,attr"`
+	File 		string			  `xml:"file,attr"`
 	SkipMessage *JUnitSkipMessage `xml:"skipped,omitempty"`
 	Failure     *JUnitFailure     `xml:"failure,omitempty"`
 }
