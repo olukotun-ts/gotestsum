@@ -18,7 +18,7 @@ jobs:
       - run: mkdir -p $TEST_RESULTS
       - run:
           name: Use forked runner
-          command: go get github.com:olukotun-ts/gotestsum.git
+          command: go get github.com:olukotun-ts/gotestsum
       - run:
           name: Run unit tests
           command: |
