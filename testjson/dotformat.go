@@ -7,10 +7,9 @@ import (
 	"sort"
 	"strings"
 	"time"
-
 	"github.com/sirupsen/logrus"
 	"golang.org/x/crypto/ssh/terminal"
-	"gotest.tools/gotestsum/internal/dotwriter"
+	"github.com/olukotun-ts/gotestsum/internal/dotwriter"
 )
 
 func dotsFormatV1(event TestEvent, exec *Execution) (string, error) {
