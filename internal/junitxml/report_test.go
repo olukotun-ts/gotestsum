@@ -14,15 +14,15 @@ import (
 	"gotest.tools/v3/golden"
 )
 
-func TestWrite(t *testing.T) {
-	out := new(bytes.Buffer)
-	exec := createExecution(t)
+// func TestWrite(t *testing.T) {
+// 	out := new(bytes.Buffer)
+// 	exec := createExecution(t)
 
-	defer env.Patch(t, "GOVERSION", "go7.7.7")()
-	err := Write(out, exec, Config{})
-	assert.NilError(t, err)
-	golden.Assert(t, out.String(), "junitxml-report.golden")
-}
+// 	defer env.Patch(t, "GOVERSION", "go7.7.7")()
+// 	err := Write(out, exec, Config{})
+// 	assert.NilError(t, err)
+// 	golden.Assert(t, out.String(), "junitxml-report.golden")
+// }
 
 func createExecution(t *testing.T) *testjson.Execution {
 	exec, err := testjson.ScanTestOutput(testjson.ScanConfig{
