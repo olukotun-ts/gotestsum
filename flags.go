@@ -6,7 +6,7 @@ import (
 	"strings"
 
 	"github.com/pkg/errors"
-	"gotest.tools/gotestsum/internal/junitxml"
+	"github.com/olukotun-ts/gotestsum/internal/junitxml"
 	"gotest.tools/gotestsum/testjson"
 )
 

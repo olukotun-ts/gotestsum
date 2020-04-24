@@ -6,7 +6,7 @@ import (
 
 	"github.com/pkg/errors"
 	log "github.com/sirupsen/logrus"
-	"gotest.tools/gotestsum/internal/junitxml"
+	"github.com/olukotun-ts/gotestsum/internal/junitxml"
 	"gotest.tools/gotestsum/testjson"
 )
 
