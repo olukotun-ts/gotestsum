@@ -12,7 +12,7 @@ import (
 	"time"
 	"unicode/utf8"
 
-	"gotest.tools/gotestsum/internal/dotwriter"
+	"github.com/olukotun-ts/gotestsum/internal/dotwriter"
 	"gotest.tools/v3/assert"
 	"gotest.tools/v3/assert/cmp"
 	"gotest.tools/v3/golden"
