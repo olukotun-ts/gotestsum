@@ -1,136 +1,32 @@
-version: 2.1
-
-orbs:
-  go: gotest/tools@0.0.13
+version: 2
 
 workflows:
-  ci:
+  testing:
     jobs:
-      - go/test:
-          name: test-go-1.11
-          gotestsum-format: short-verbose
-          executor:
-            name: go/golang
-            tag: 1.11-alpine
-
-      - go/test:
-          name: test-go-1.12
-          gotestsum-format: short-verbose
-          executor:
-            name: go/golang
-            tag: 1.12-alpine
-
-      - go/test:
-          name: test-go-1.13
-          gotestsum-format: short-verbose
-          executor:
-            name: go/golang
-            tag: 1.13-alpine
-
-      - go/test:
-          name: test-go-1.14
-          gotestsum-format: short-verbose
-          executor:
-            name: go/golang
-            tag: 1.14-alpine
-
-      - go/test:
-          name: test-windows-go1.12
-          executor: windows
-          pre-steps:
-            - run: |
-                git config --global core.autocrlf false
-                git config --global core.symlinks true
-
-      - go/lint:
-          golangci-lint-version: 1.24.0
-
-      - build
-      - run
-
-      - update-windows-golden:
-          filters:
-            branches: {ignore: '/.*/'}
-
-      - build:
-          name: release
-          publish: true
-          filters:
-            tags: {only: '/v[0-9]+(\.[0-9]+)*/'}
-            branches: {ignore: '/.*/'}
-
-executors:
-  windows:
-    machine:
-      image: windows-server-2019-vs2019:201908-06
-      resource_class: windows.medium
-      shell: bash.exe
-
-commands:
-  install-goreleaser:
-    description: Install goreleaser
-    steps:
-      - run:
-          name: Install goreleaser
-          command: |
-            command -v goreleaser && exit
-            wget -O- -q https://install.goreleaser.com/github.com/goreleaser/goreleaser.sh | sh
+      - test
 
 jobs:
-
-  build:
-    parameters:
-      publish:
-        type: boolean
-        default: false
-    executor: go/golang
+  test:
+    docker:
+      - image: circleci/golang:1.12
+    parallelism: 2
+    environment:
+      TEST_RESULTS: /tmp/test-results
     steps:
-      - go/install: {package: git}
-      - go/install-ssh
       - checkout
-      - go/mod-download
-      - go/mod-tidy-check
-      - install-goreleaser
-      - unless:
-          condition: << parameters.publish >>
-          steps:
-            run:
-              name: build binaries
-              command: bin/goreleaser --rm-dist --snapshot
-      - when:
-          condition: << parameters.publish >>
-          steps:
-            run:
-              name: build and publish binaries
-              command: bin/goreleaser --rm-dist --skip-validate
+      - run: mkdir -p $TEST_RESULTS
+      - run:
+          name: Run unit tests
+          command: |
+            PACKAGE_NAMES=$(go list ./... | circleci tests split --split-by=timings --timings-type=classname)
+            echo $PACKAGE_NAMES
+            gotestsum --junitfile ${TEST_RESULTS}/gotestsum-report.xml -- $PACKAGE_NAMES
+      - run:
+          name: Get timing data
+          command: |
+            cp -r $CIRCLE_INTERNAL_TASK_DATA/circle-test-results $TEST_RESULTS
       - store_artifacts:
-          path: ./dist
-          destination: dist
-
-  run:
-    executor: go/golang
-    steps:
-      - go/install: {package: git}
-      - go/install-ssh
-      - checkout
-      - go/mod-download
-      - run: |
-          mkdir -p dist
-          go build -o dist/gotestsum .
-      - run: dist/gotestsum
-
-  update-windows-golden:
-    executor: windows
-    steps:
-      - checkout
-      - go/install-gotestsum
-      - run: |
-          git config --global core.autocrlf false
-          git config --global core.symlinks true
-
-      - run: |
-          /go/bin/gotestsum ./testjson ./internal/junitxml -test.update-golden
-
-      - store_artifacts:
-          path: testjson/testdata/
-          destination: golden
+          destination: test-results
+          path: /tmp/test-results
+      - store_test_results:
+          path: /tmp/test-results
