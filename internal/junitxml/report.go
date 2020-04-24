@@ -40,6 +40,7 @@ type JUnitTestCase struct {
 	Classname   string            `xml:"classname,attr"`
 	Name        string            `xml:"name,attr"`
 	Time        string            `xml:"time,attr"`
+	File 		string			  `xml:"time,attr"`
 	SkipMessage *JUnitSkipMessage `xml:"skipped,omitempty"`
 	Failure     *JUnitFailure     `xml:"failure,omitempty"`
 }
@@ -180,6 +181,7 @@ func newJUnitTestCase(tc testjson.TestCase, formatClassname FormatFunc) JUnitTes
 		Classname: formatClassname(tc.Package),
 		Name:      tc.Test,
 		Time:      formatDurationAsSeconds(tc.Elapsed),
+		File:	   tc.Test,
 	}
 }
 

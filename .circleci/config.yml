@@ -17,6 +17,9 @@ jobs:
       - checkout
       - run: mkdir -p $TEST_RESULTS
       - run:
+          name: Use forked runner
+          command: go get github.com:olukotun-ts/gotestsum.git
+      - run:
           name: Run unit tests
           command: |
             PACKAGE_NAMES=$(go list ./... | circleci tests split --split-by=timings --timings-type=classname)
