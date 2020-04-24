@@ -11,7 +11,7 @@ import (
 	"gotest.tools/gotestsum/testjson"
 	"gotest.tools/v3/assert"
 	"gotest.tools/v3/env"
-	"gotest.tools/v3/golden"
+	// "gotest.tools/v3/golden"
 )
 
 // func TestWrite(t *testing.T) {
