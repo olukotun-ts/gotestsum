@@ -179,7 +179,7 @@ func packageTestCases(pkg *testjson.Package, formatClassname FormatFunc) []JUnit
 func newJUnitTestCase(tc testjson.TestCase, formatClassname FormatFunc) JUnitTestCase {
 	return JUnitTestCase{
 		Classname: formatClassname(tc.Package),
-		Name:      tc.Test,
+		Name:      formatClassname(tc.Package),
 		File:	   formatClassname(tc.Package),
 		Time:      formatDurationAsSeconds(tc.Elapsed),
 	}
