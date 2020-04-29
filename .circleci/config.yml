@@ -22,8 +22,9 @@ jobs:
       - run:
           name: Run unit tests
           command: |
-            PACKAGE_NAMES=$(go list ./... | circleci tests split --split-by=timings --timings-type=testname)
+            PACKAGE_NAMES=$(go list ./... | circleci tests split --split-by=timings --timings-type=filename)
             echo $PACKAGE_NAMES
+            # go test -v 2>&1 | go-junit-report > ${TEST_RESULTS}/go-junit-report.xml
             gotestsum --junitfile ${TEST_RESULTS}/gotestsum-report.xml -- $PACKAGE_NAMES
       - run:
           name: Get timing data
