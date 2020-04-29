@@ -180,7 +180,7 @@ func newJUnitTestCase(tc testjson.TestCase, formatClassname FormatFunc) JUnitTes
 	return JUnitTestCase{
 		Classname: formatClassname(tc.Package),
 		Name:      tc.Test,
-		File:	   tc.Test,
+		File:	   format(Classname(tc.Package)),
 		Time:      formatDurationAsSeconds(tc.Elapsed),
 	}
 }
