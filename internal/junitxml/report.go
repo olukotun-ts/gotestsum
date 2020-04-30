@@ -192,7 +192,7 @@ func newJUnitTestCase(tc testjson.TestCase, formatClassname FormatFunc) JUnitTes
 
 	return JUnitTestCase{
 		Classname: formatClassname(tc.Package),
-		Name:      reg.ReplaceAllString(tc.Test, ""),
+		Name:      tc.Test,
 		File:	   path.Base(tc.Package),
 		Time:      formatDurationAsSeconds(tc.Elapsed),
 	}
