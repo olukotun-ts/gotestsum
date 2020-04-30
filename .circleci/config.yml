@@ -10,7 +10,7 @@ jobs:
   test:
     docker:
       - image: circleci/golang:1.12
-    parallelism: 2
+    parallelism: 3
     environment:
       TEST_RESULTS: /tmp/test-results
     steps:
