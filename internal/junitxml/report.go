@@ -9,7 +9,6 @@ import (
 	"os"
 	"os/exec"
 	"path"
-	"regexp"
 	"strings"
 	"time"
 
@@ -179,17 +178,6 @@ func packageTestCases(pkg *testjson.Package, formatClassname FormatFunc) []JUnit
 }
 
 func newJUnitTestCase(tc testjson.TestCase, formatClassname FormatFunc) JUnitTestCase {
-	// Filter for alphanumeric.
-    reg, err := regexp.Compile("[^a-zA-Z0-9]+")
-    if err != nil {
-		return JUnitTestCase{
-			Classname: formatClassname(tc.Package),
-			Name:      "error",
-			File:	   path.Base(tc.Package),
-			Time:      formatDurationAsSeconds(tc.Elapsed),
-		}
-    }
-
 	return JUnitTestCase{
 		Classname: formatClassname(tc.Package),
 		Name:      tc.Test,
