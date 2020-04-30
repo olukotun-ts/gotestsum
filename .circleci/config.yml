@@ -18,7 +18,8 @@ jobs:
       - run: mkdir -p $TEST_RESULTS
       - run:
           name: Use forked runner
-          command: go get github.com/olukotun-ts/gotestsum
+          # command: go get github.com/olukotun-ts/gotestsum
+          command: go get -u github.com/jstemmer/go-junit-report
       - run:
           name: Run unit tests
           command: |
