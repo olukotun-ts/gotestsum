@@ -8,6 +8,7 @@ import (
 	"io"
 	"os"
 	"os/exec"
+	"path"
 	"regexp"
 	"strings"
 	"time"
@@ -184,7 +185,7 @@ func newJUnitTestCase(tc testjson.TestCase, formatClassname FormatFunc) JUnitTes
 		return JUnitTestCase{
 			Classname: formatClassname(tc.Package),
 			Name:      "error",
-			File:	   formatClassname(tc.Package),
+			File:	   path.Base(tc.Package),
 			Time:      formatDurationAsSeconds(tc.Elapsed),
 		}
     }
@@ -192,7 +193,7 @@ func newJUnitTestCase(tc testjson.TestCase, formatClassname FormatFunc) JUnitTes
 	return JUnitTestCase{
 		Classname: formatClassname(tc.Package),
 		Name:      reg.ReplaceAllString(tc.Test, ""),
-		File:	   formatClassname(tc.Package),
+		File:	   path.Base(tc.Package),
 		Time:      formatDurationAsSeconds(tc.Elapsed),
 	}
 }
