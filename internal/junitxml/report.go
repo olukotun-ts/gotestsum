@@ -181,7 +181,12 @@ func newJUnitTestCase(tc testjson.TestCase, formatClassname FormatFunc) JUnitTes
 	// Filter for alphanumeric.
     reg, err := regexp.Compile("[^a-zA-Z0-9]+")
     if err != nil {
-        return err
+		return JUnitTestCase{
+			Classname: formatClassname(tc.Package),
+			Name:      "error",
+			File:	   formatClassname(tc.Package),
+			Time:      formatDurationAsSeconds(tc.Elapsed),
+		}
     }
 
 	return JUnitTestCase{
