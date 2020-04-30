@@ -177,9 +177,15 @@ func packageTestCases(pkg *testjson.Package, formatClassname FormatFunc) []JUnit
 }
 
 func newJUnitTestCase(tc testjson.TestCase, formatClassname FormatFunc) JUnitTestCase {
+	// Filter for alphanumeric.
+    reg, err := regexp.Compile("[^a-zA-Z0-9]+")
+    if err != nil {
+        log.Fatal(err)
+    }
+
 	return JUnitTestCase{
 		Classname: formatClassname(tc.Package),
-		Name:      formatClassname(tc.Package),
+		Name:      reg.ReplaceAllString(tc.Test, ""),
 		File:	   formatClassname(tc.Package),
 		Time:      formatDurationAsSeconds(tc.Elapsed),
 	}
